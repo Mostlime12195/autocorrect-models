@@ -1,24 +1,24 @@
-# autocorrect-models
+# keylime-models
 
-Model files for the Autocorrect Android keyboard. They're published as release assets: the current set is
-[`models-style1`](../../releases/tag/models-style1) (the earlier [`models-v1`](../../releases/tag/models-v1) has the
-pre-style models; its `manifest.json` is kept in sync with the newest one). The keyboard downloads them on first run and
-checks each file against the SHA-256 in `manifest.json`.
+The Keylime models (a preview) now live on Hugging Face, one repo per model:
 
-| file | what it is |
+| model | repo |
 |---|---|
-| `manifest.json` | file list with sizes and SHA-256, step-graph layout, decode parameters per model |
-| `m2s.step.int4m.ort` | m2 style (106M Block AttnRes decoder LM, 32k vocab, trained on 9B tokens with casual / standard / formal style tokens), int4 weights, pre-optimized onnxruntime format (default) |
-| `m2s.step.int8.ort` | the same style model with int8 weights |
-| `m2.step.int4m.ort` | m2 (106M, 3B tokens, no style tokens), int4 weights |
-| `m2.step.int8.ort` | m2 with int8 weights |
-| `lm_block4.step.int8.ort` | 34M Block AttnRes LM, int8 weights (battery saver) |
-| `vocab_m2.json`, `vocab.json` | SentencePiece vocabularies for m2 / m2s and the 34M model |
-| `lexicon.tsv` | 100k-word frequency lexicon used for candidate generation (known misspellings removed) |
+| m2 style (106M Block AttnRes decoder LM, 32k vocab, casual / standard / formal style tokens), int4, default | [MostLime/keylime-m2-preview](https://huggingface.co/MostLime/keylime-m2-preview) |
+| m1 (34M Block AttnRes decoder LM, 16k vocab), int8, battery saver | [MostLime/keylime-m1-preview](https://huggingface.co/MostLime/keylime-m1-preview) |
 
-Style tokens (m2s only): the context starts with `[EOS, id]`, where id is 249 for casual, 250 for standard and 251 for formal.
+Each repo has the step graph and the tree step graph in pre-optimized onnxruntime (ORT) format, the SentencePiece
+vocab, and a model card with sizes and SHA-256s. The apps download them on first run (Nest mirror as the fallback) and
+check each file against the SHA-256 in `manifest.json`.
 
-This repo has no code and no training data, only the exported weights and the vocab/lexicon files the keyboard needs.
+This repo keeps:
+
+- `manifest.json` in the [`models-v1`](../../releases/tag/models-v1) release: the apps' fallback manifest URL (the
+  primary copy is on Nest). It lists each model's files, its mirrors (`base_urls`), step-graph layout and decode
+  parameters.
+- the `app-v*` (Android APK) and `mac-v*` (Mac zip) releases the in-app updaters download.
+
+The model files that used to be release assets here have moved to Hugging Face.
 
 ## License
 
